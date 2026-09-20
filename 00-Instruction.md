@@ -14,21 +14,52 @@ Chaque site possède un routeur, un switch et un PC de test. Les routeurs sont i
 ## Schéma logique
 
 ```text
-                         Lien /30
-        R-AZAY =========================== R-EVIAN
-          |  \                             /  |
-          |   \                           /   |
-       LAN Azay  \                     /  LAN Évian
-          |        \                 /       |
-       SW-AZAY      \             /       SW-EVIAN
-          |           \           /           |
-       PC-AZAY         R-VILLEMANDRY ——— R-ANNECY
-                          |                 |
-                    LAN Villemandry     LAN Annecy
-                          |                 |
-                    SW-VILLEMANDRY     SW-ANNECY
-                          |                 |
-                    PC-VILLEMANDRY     PC-ANNECY
+
+ SITE AZAY                                      SITE EVIAN
+
+ PC-AZAY                                        PC-EVIAN
+ 192.168.2.10/24                                192.168.1.10/26
+     |                                               |
+     | Fa0/1                                         | Fa0/1
+     |                                               |
+ +---+--------+                                +---+--------+
+ |  SW-AZAY   |                                |  SW-EVIAN  |
+ | VLAN 1     |                                | VLAN 1     |
+ | .2/24      |                                | .61/26     |
+ +---+--------+                                +---+--------+
+     | G0/1                                        | G0/1
+     |                                             |
+     | G0/0                                        | G0/0
+ +---+--------+       10.10.10.0/30              +---+--------+
+ |  R-AZAY    | G0/1 .1 ================ .2 G0/1 |  R-EVIAN   |
+ | G0/0 .1    |                                  | G0/0 .62   |
+ | G0/2 .5    |                                  | G0/2 .9    |
+ +---+--------+                                  +---+--------+
+     | G0/2 .5                                       | G0/2 .9
+     |                                               |
+     | 10.10.10.4/30                                 | 10.10.10.8/30
+     | .6 vers Azay                                  | .10 vers Annecy
+     |                                               |
+     |                                               |
+ +---+----------------+       10.10.10.12/30    +---+-----------+
+ | R-VILLEMANDRY      |=========================| R-ANNECY      |
+ | G0/1 .6 vers Azay  | .13                  .14| G0/1 .10      |
+ | G0/2 .13           |                         | G0/2 .14      |
+ | G0/0 .126          |                         | G0/0 .1       |
+ +---+----------------+                         +----+----------+
+     | G0/0                                          | G0/0
+     |                                               |
+ +---+----------------+                         +---+----------+
+ | SW-VILLEMANDRY    |                          | SW-ANNECY    |
+ | VLAN 1            |                          | VLAN 1       |
+ | .125/25           |                          | .2/22        |
+ +---+----------------+                         +---+----------+
+     | Fa0/1                                          | Fa0/1
+     |                                                |
+ PC-VILLEMANDRY                                  PC-ANNECY
+ 10.20.3.10/25                                    192.230.5.20/22
+
+ SITE VILLEMANDRY                               SITE ANNECY
 ```
 
 ## Équipements
