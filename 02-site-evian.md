@@ -133,7 +133,7 @@ ping 10.20.3.10
 ping 192.230.5.20
 tracert 192.230.5.20
 ```
-<!-- > Attention : `G0/1` doit utiliser `10.10.10.2` pour Azay. `G0/2` doit utiliser `10.10.10.9` pour Annecy. Ne place pas ces deux adresses sur la même liaison ni sur deux interfaces du même routeur appartenant au même `/30`. -->
+><!-- > Attention : `G0/1` doit utiliser `10.10.10.2` pour Azay. `G0/2` doit utiliser `10.10.10.9` pour Annecy. Ne place pas ces deux adresses sur la même liaison ni sur deux interfaces du même routeur appartenant au même `/30`. -->
 
 ## Configuration du switch
 
@@ -158,24 +158,44 @@ exit
 
 vtp mode transparent
 
-interface vlan 1
-description MANAGEMENT_SW_EVIAN
+! --- VLANs ---
+vlan 10
+name LAN_EVIAN
+exit
+
+! --- Management du switch sur VLAN 10 (même sous-réseau que le LAN) ---
+interface vlan 10
+description MANAGEMENT_SW_EVIAN_VLAN10
 ip address 192.168.1.61 255.255.255.192
 no shutdown
 exit
 
+! --- Passerelle par défaut = SVI du routeur ---
 ip default-gateway 192.168.1.62
 
-interface fastEthernet0/1
-description PC_EVIAN
+! --- Port vers le routeur (déjà en VLAN 10) ---
+interface GigabitEthernet3/0/24
+description ROUTE_VERS_ROUTEUR_LAN_EVIAN
 switchport mode access
-spanning-tree portfast
+switchport access vlan 10
+spanning-tree portfast edge
 no shutdown
 exit
 
-interface gigabitEthernet0/1
-description VERS_R_EVIAN_G0_0
+! --- Tous les autres ports en VLAN 10 (LAN EVIAN) ---
+interface range GigabitEthernet3/0/1 - 23
+description PORTS_LAN_EVIAN
 switchport mode access
+switchport access vlan 10
+spanning-tree portfast edge
+no shutdown
+exit
+
+interface range GigabitEthernet3/0/25 - 28
+description PORTS_LAN_EVIAN
+switchport mode access
+switchport access vlan 10
+spanning-tree portfast edge
 no shutdown
 exit
 
