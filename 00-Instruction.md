@@ -78,6 +78,7 @@ sur le site d'Annecy il y a un stack de 2960x
 ### LAN des sites
 
 | Site | Réseau | Masque | Routeur | Switch | PC |
+|---|---|---|---|---|---|
 | Azay | `192.168.2.0/24` | `255.255.255.0` | `192.168.2.1` | `192.168.2.2` | `192.168.2.10` |
 | Évian | `192.168.1.0/26` | `255.255.255.192` | `192.168.1.62` | `192.168.1.61` | `192.168.1.10` |
 | Villemandry | `10.20.3.0/25` | `255.255.255.128` | `10.20.3.126` | `10.20.3.125` | `10.20.3.10` |
@@ -108,9 +109,7 @@ sur le site d'Annecy il y a un stack de 2960x
 | LAB_ROUTEUR-VILLEMANDRY | `GigabitEthernet0/2` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/2` |
 | PC-ANNECY | `FastEthernet0` | LAB_SW_ANNECY | `FastEthernet0/1` |
 | LAB_SW_ANNECY | `GigabitEthernet0/1` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/0` |
-
-Utiliser de préférence le câble **Copper Cross-Over** entre deux routeurs. Pour PC-switch et switch-routeur, utiliser un câble droit ou le choix automatique de Packet Tracer.
-
+<!--
 ## Méthode de configuration
 
 1. Placer et renommer les équipements.
@@ -124,7 +123,8 @@ Utiliser de préférence le câble **Copper Cross-Over** entre deux routeurs. Po
 9. Vérifier les routes avec `show ip route`.
 10. Tester les communications entre les quatre LAN avec `ping` et `traceroute`.
 11. Sauvegarder avec `copy running-config startup-config`.
-
+-->
+<!--
 ## Règles de dépannage
 
 - `administratively down/down` : exécuter `no shutdown`.
@@ -132,5 +132,5 @@ Utiliser de préférence le câble **Copper Cross-Over** entre deux routeurs. Po
 - `up/down` : vérifier l’interface distante et le câblage.
 - Adresse qui se chevauche : vérifier qu’un même sous-réseau n’est pas utilisé sur deux interfaces différentes du même routeur.
 - Une liaison `/30` doit utiliser deux adresses du même réseau, une à chaque extrémité.
-
-Les fichiers dédiés à chaque site contiennent les commandes détaillées et les vérifications propres à chaque équipement.
+--> 
+Les fichiers dédiés à chaque site contiennent une configuration détaillées. 
