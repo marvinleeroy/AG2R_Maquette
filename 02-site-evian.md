@@ -10,8 +10,8 @@
 
 | Équipement       | Port                    | Équipement            | Port                         |
 |------------------|-------------------------|-----------------------|------------------------------|
-| PC-EVIAN         | `FastEthernet0`         | SW-EVIAN              | `FastEthernet0/1`            |
-| LAB_SW-EVIAN     | `GigabitEthernet0/1`    | LAB_ROUTEUR_EVIAN     | `GigabitEthernet0` (LAN)     |
+| PC-EVIAN         | `FastEthernet0`         | LAB_SW_EVIAN          | `FastEthernet0/1`            |
+| LAB_SW_EVIAN     | `GigabitEthernet3/0/24` | LAB_ROUTEUR_EVIAN     | `GigabitEthernet0` (LAN)     |
 | LAB_ROUTEUR_EVIAN| `GigabitEthernet8`      | LAB_ROUTEUR_AZAY      | `GigabitEthernet8` (WAN)     |
 | LAB_ROUTEUR_EVIAN| `GigabitEthernet9`      | LAB_ROUTEUR_ANNECY    | `GigabitEthernet9` (WAN)     |
 
