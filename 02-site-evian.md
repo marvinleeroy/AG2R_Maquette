@@ -2,70 +2,32 @@
 
 ## Équipements
 
-- Routeur : `LAB_ROUTEUR_EVIAN`, Cisco 890Series.
-- Switch : `LAB_SW_EVIAN`, Cisco XXXX.
+- Routeur : `LAB_ROUTEUR_EVIAN`, Cisco 890 Series.
+- Switch : `LAB_SW_EVIAN`, Cisco Catalyst 2960X.
 - PC : `PC-EVIAN`.
 
 ## Connexions
 
-| Équipement | Port | Équipement | Port |
-|---|---|---|---|
-| PC-EVIAN | `FastEthernet0` | SW-EVIAN | `FastEthernet0/1` |
-| SW-EVIAN | `GigabitEthernet0/1` | LAB_ROUTEUR_EVIAN | `GigabitEthernet0` (LAN) |
-| R-EVIAN | `GigabitEthernet0/1` | LAB_ROUTEUR_AZAY | `GigabitEthernet8` (WAN) |
-| R-EVIAN | `GigabitEthernet0/2` | LAB_ROUTEUR_ANNECY | `GigabitEthernet9` (WAN)|
+| Équipement       | Port                    | Équipement            | Port                         |
+|------------------|-------------------------|-----------------------|------------------------------|
+| PC-EVIAN         | `FastEthernet0`         | SW-EVIAN              | `FastEthernet0/1`            |
+| SW-EVIAN         | `GigabitEthernet0/1`    | LAB_ROUTEUR_EVIAN     | `GigabitEthernet0` (LAN)     |
+| LAB_ROUTEUR_EVIAN| `GigabitEthernet8`      | LAB_ROUTEUR_AZAY      | `GigabitEthernet8` (WAN)     |
+| LAB_ROUTEUR_EVIAN| `GigabitEthernet9`      | LAB_ROUTEUR_ANNECY    | `GigabitEthernet9` (WAN)     |
 
 ## Adressage
 
-| Interface | Adresse |
-|---|---|
-| LAB_ROUTEUR_EVIAN G0 | `192.168.1.62/26` |
-| LAB_ROUTEUR_EVIAN G8 | `10.10.10.2/30` |
-| LAB_ROUTEUR_EVIAN G9 | `10.10.10.9/30` |
-| SW-EVIAN VLAN 1 | `192.168.1.61/26` |
-| PC-EVIAN | `192.168.1.10/26` |
-| Passerelle PC et switch | `192.168.1.62` |
+| Interface                 | Adresse                    |
+|---------------------------|----------------------------|
+| LAB_ROUTEUR_EVIAN G0      | `192.168.1.62/26`          |
+| LAB_ROUTEUR_EVIAN G8      | `10.10.10.2/30`            |
+| LAB_ROUTEUR_EVIAN G9      | `10.10.10.9/30`            |
+| LAB_SW_EVIAN VLAN 10      | `192.168.1.61/26`          |
+| PC-EVIAN                  | `192.168.1.10/26`          |
+| Passerelle PC et switch   | `192.168.1.62`             |
 
 ## Configuration du routeur
-<!--
-```cisco
-enable
-configure terminal
-hostname R-EVIAN
-no ip domain-lookup
-enable secret EVIAN
-service password-encryption
-banner motd # Bienvenue sur le site EVIAN #
 
-line console 0
-password EVIAN
-login
-logging synchronous
-exit
-
-line vty 0 4
-password EVIAN
-login
-exit
-
-interface gigabitEthernet0/0
-description LAN_EVIAN_192.168.1.0_26
-ip address 192.168.1.62 255.255.255.192
-no shutdown
-exit
-
-interface gigabitEthernet0/1
-description LIAISON_VERS_AZAY_10.10.10.0_30
-ip address 10.10.10.2 255.255.255.252
-no shutdown
-exit
-
-interface gigabitEthernet0/2
-description LIAISON_VERS_ANNECY_10.10.10.8_30
-ip address 10.10.10.9 255.255.255.252
-no shutdown
-exit
--->
 ```cisco
 enable
 configure terminal
@@ -111,15 +73,21 @@ exit
 
 ! --- WAN : liaison vers ANNECY (10.10.10.8/30) ---
 interface GigabitEthernet9
- description LIAISON_VERS_ANNECY_10.10.10.8_30
- ip address 10.10.10.9 255.255.255.252
- no shutdown
+description LIAISON_VERS_ANNECY_10.10.10.8_30
+ip address 10.10.10.9 255.255.255.252
+no shutdown
 exit
+
 end
 
 copy running-config startup-config
-
 ```
+
+### Routes statiques
+
+```cisco
+enable
+configure terminal
 
 ip route 192.168.2.0 255.255.255.0 10.10.10.1
 ip route 10.20.3.0 255.255.255.128 10.10.10.1
@@ -128,12 +96,19 @@ ip route 192.230.4.0 255.255.252.0 10.10.10.10
 end
 copy running-config startup-config
 ```
-```
+
+### Tests depuis le routeur
+
+```cisco
 ping 10.20.3.10
 ping 192.230.5.20
-tracert 192.230.5.20
+traceroute 192.230.5.20
 ```
-><!-- > Attention : `G0/1` doit utiliser `10.10.10.2` pour Azay. `G0/2` doit utiliser `10.10.10.9` pour Annecy. Ne place pas ces deux adresses sur la même liaison ni sur deux interfaces du même routeur appartenant au même `/30`. -->
+
+<!-- 
+> Attention : G8 doit utiliser 10.10.10.2 pour Azay. G9 doit utiliser 10.10.10.9 pour Annecy. 
+Ne place pas ces deux adresses sur la même liaison ni sur deux interfaces du même routeur appartenant au même /30. 
+-->
 
 ## Configuration du switch
 
@@ -205,11 +180,13 @@ copy running-config startup-config
 
 ## Configuration du PC
 
-- IP : `192.168.1.10`.
-- Masque : `255.255.255.192`.
-- Passerelle : `192.168.1.62`.
+- IP : `192.168.1.10`
+- Masque : `255.255.255.192`
+- Passerelle : `192.168.1.62`
 
 ## Vérifications
+
+Depuis le routeur :
 
 ```cisco
 show ip interface brief
@@ -223,7 +200,6 @@ Depuis le PC :
 
 ```text
 ping 192.168.2.10
+```
 
-
-
-
+---
