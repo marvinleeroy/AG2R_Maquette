@@ -29,9 +29,9 @@ Chaque site possède un routeur, un switch et un PC de test. Les routeurs sont i
  +---+--------+                                +---+------------+
      | G0/1                                        | G0/1
      |                                             |
-     | G0/0                                        | G0/0
+     | G0/0                                        | G0
  +---+--------+       10.10.10.0/30              +---+------------------+
- |  R-AZAY    | G0/1 .1 ================ .2 G0/1 |  LAB_ROUTEUR_EVIAN   |
+ |  R-AZAY    | G0/1 .1 ================ .2   G8 |  LAB_ROUTEUR_EVIAN   |
  | G0/0 .1    |                                  |       G0 .62         |
  | G0/2 .5    |                                  |       G9 .9          |
  +---+--------+                                  +---+------------------+
@@ -102,8 +102,8 @@ sur le site d'Annecy il y a un stack de 2960x
 | LAB_ROUTEUR_AZAY | `GigabitEthernet0/1` | LAB_ROUTEUR_EVIAN | `GigabitEthernet0/1` |
 | LAB_ROUTEUR_AZAY | `GigabitEthernet0/2` | LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/1` |
 | PC-EVIAN | `FastEthernet0` | LAB_SW_EVIAN | `FastEthernet0/1` |
-| LAB_SW-EVIAN | `GigabitEthernet0/1` | LAB_ROUTEUR_EVIAN | `GigabitEthernet0/0` |
-| R-EVIAN | `GigabitEthernet0/2` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/1` |
+| LAB_SW-EVIAN | `GigabitEthernet3/0/24` | LAB_ROUTEUR_EVIAN | `GigabitEthernet0/0` |
+| LAB_ROUTEUR_EVIAN | `GigabitEthernet9` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/1` |
 | PC-VILLEMANDRY | `FastEthernet0` | LAB_SW_VILLEMANDRY | `FastEthernet0/1` |
 | LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/1` | LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/0` |
 | LAB_ROUTEUR-VILLEMANDRY | `GigabitEthernet0/2` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/2` |
