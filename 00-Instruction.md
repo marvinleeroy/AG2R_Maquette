@@ -1,8 +1,8 @@
-# Maquette Cisco Packet Tracer — Vue générale
+# Maquette AG2R — Vue générale
 
 ## Objectif
 
-Construire une maquette Cisco Packet Tracer représentant quatre sites distants :
+Construire une maquette pour pratiquer le réseau :
 
 - Azay ;
 - Évian ;
@@ -66,18 +66,18 @@ Chaque site possède un routeur, un switch et un PC de test. Les routeurs sont i
 
 | Type | Modèle conseillé | Quantité |
 |---|---|---:|
-| Routeur | Cisco 2911 | 4 |
-| Switch | Cisco 2960 | 4 |
+| Routeur | Cisco 890 Series | 2 |
+| Routeur | Cisco x | x |
+| Switch | Cisco Catalyst 2960x | 4 |
 | PC | PC-PT | 4 |
 
-Aucun module série n’est nécessaire avec cette architecture : les routeurs 2911 disposent de suffisamment d’interfaces GigabitEthernet. Les connexions entre routeurs sont donc réalisées en Ethernet.
+sur le site d'Annecy il y a un stack de 2960x
 
 ## Plan d’adressage
 
 ### LAN des sites
 
 | Site | Réseau | Masque | Routeur | Switch | PC |
-|---|---|---|---|---|---|
 | Azay | `192.168.2.0/24` | `255.255.255.0` | `192.168.2.1` | `192.168.2.2` | `192.168.2.10` |
 | Évian | `192.168.1.0/26` | `255.255.255.192` | `192.168.1.62` | `192.168.1.61` | `192.168.1.10` |
 | Villemandry | `10.20.3.0/25` | `255.255.255.128` | `10.20.3.126` | `10.20.3.125` | `10.20.3.10` |
@@ -96,18 +96,18 @@ Aucun module série n’est nécessaire avec cette architecture : les routeurs 2
 
 | Équipement A | Port | Équipement B | Port |
 |---|---|---|---|
-| PC-AZAY | `FastEthernet0` | SW-AZAY | `FastEthernet0/1` |
-| SW-AZAY | `GigabitEthernet0/1` | R-AZAY | `GigabitEthernet0/0` |
-| R-AZAY | `GigabitEthernet0/1` | R-EVIAN | `GigabitEthernet0/1` |
-| R-AZAY | `GigabitEthernet0/2` | R-VILLEMANDRY | `GigabitEthernet0/1` |
-| PC-EVIAN | `FastEthernet0` | SW-EVIAN | `FastEthernet0/1` |
-| SW-EVIAN | `GigabitEthernet0/1` | R-EVIAN | `GigabitEthernet0/0` |
-| R-EVIAN | `GigabitEthernet0/2` | R-ANNECY | `GigabitEthernet0/1` |
-| PC-VILLEMANDRY | `FastEthernet0` | SW-VILLEMANDRY | `FastEthernet0/1` |
-| SW-VILLEMANDRY | `GigabitEthernet0/1` | R-VILLEMANDRY | `GigabitEthernet0/0` |
-| R-VILLEMANDRY | `GigabitEthernet0/2` | R-ANNECY | `GigabitEthernet0/2` |
-| PC-ANNECY | `FastEthernet0` | SW-ANNECY | `FastEthernet0/1` |
-| SW-ANNECY | `GigabitEthernet0/1` | R-ANNECY | `GigabitEthernet0/0` |
+| PC-AZAY | `FastEthernet0` | LAB_ROUTEUR_SW-AZAY | `FastEthernet0/1` |
+| LAB_SW_AZAY | `GigabitEthernet0/1` | LAB_ROUTEUR_AZAY | `GigabitEthernet0/0` |
+| LAB_ROUTEUR_AZAY | `GigabitEthernet0/1` | LAB_ROUTEUR_EVIAN | `GigabitEthernet0/1` |
+| LAB_ROUTEUR_AZAY | `GigabitEthernet0/2` | LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/1` |
+| PC-EVIAN | `FastEthernet0` | LAB_SW_EVIAN | `FastEthernet0/1` |
+| LAB_SW-EVIAN | `GigabitEthernet0/1` | LAB_ROUTEUR_EVIAN | `GigabitEthernet0/0` |
+| R-EVIAN | `GigabitEthernet0/2` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/1` |
+| PC-VILLEMANDRY | `FastEthernet0` | LAB_SW_VILLEMANDRY | `FastEthernet0/1` |
+| LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/1` | LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/0` |
+| LAB_ROUTEUR-VILLEMANDRY | `GigabitEthernet0/2` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/2` |
+| PC-ANNECY | `FastEthernet0` | LAB_SW_ANNECY | `FastEthernet0/1` |
+| LAB_SW_ANNECY | `GigabitEthernet0/1` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/0` |
 
 Utiliser de préférence le câble **Copper Cross-Over** entre deux routeurs. Pour PC-switch et switch-routeur, utiliser un câble droit ou le choix automatique de Packet Tracer.
 
