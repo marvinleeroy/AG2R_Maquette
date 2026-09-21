@@ -144,6 +144,65 @@ Depuis le PC :
 
 ```text
 ping 192.168.2.10
+
+
+
+enable
+configure terminal
+
+hostname LAB_ROUTEUR_EVIAN
+no ip domain-lookup
+enable secret EVIAN
+service password-encryption
+banner motd # Bienvenue sur le site EVIAN #
+
+line console 0
+ password EVIAN
+ login
+ logging synchronous
+exit
+
+line vty 0 4
+ password EVIAN
+ login
+exit
+
+! --- LAN : port L2 + SVI ---
+interface GigabitEthernet0
+ description LAN_EVIAN_192.168.1.0_26
+ switchport mode access
+ switchport access vlan 10
+ no ip address
+ no shutdown
+exit
+
+interface vlan 10
+ description LAN_EVIAN_192.168.1.0_26
+ ip address 192.168.1.62 255.255.255.192
+ no shutdown
+exit
+
+! --- WAN : liaison vers AZAY (10.10.10.0/30) ---
+interface GigabitEthernet8
+ description LIAISON_VERS_AZAY_10.10.10.0_30
+ ip address 10.10.10.2 255.255.255.252
+ no shutdown
+exit
+
+! --- WAN : liaison vers ANNECY (10.10.10.8/30) ---
+interface GigabitEthernet9
+ description LIAISON_VERS_ANNECY_10.10.10.8_30
+ ip address 10.10.10.9 255.255.255.252
+ no shutdown
+exit
+
+! --- Routes statiques ---
+ip route 192.168.2.0 255.255.255.0 10.10.10.1
+ip route 10.20.3.0 255.255.255.128 10.10.10.1
+ip route 192.230.4.0 255.255.252.0 10.10.10.10
+
+end
+copy running-config startup-config
 ping 10.20.3.10
 ping 192.230.5.20
 tracert 192.230.5.20
