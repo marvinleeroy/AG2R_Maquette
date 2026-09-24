@@ -49,19 +49,20 @@ password EVIAN
 login
 exit
 
-! --- LAN : port L2 + SVI ---
+! --- LAN : port L2 + SVI + TRUNK  ---
+
 interface GigabitEthernet0
-description LAN_EVIAN_192.168.1.0_26
-switchport mode access
-switchport access vlan 10
-no ip address
-no shutdown
+ description LAN_EVIAN_TRUNK_VERS_SW
+ switchport mode trunk
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 1-2,10,1002-1005
+ no shutdown
 exit
 
 interface vlan 10
-description LAN_EVIAN_192.168.1.0_26
-ip address 192.168.1.62 255.255.255.192
-no shutdown
+ description LAN_EVIAN_192.168.1.0_26
+ ip address 192.168.1.62 255.255.255.192
+ no shutdown
 exit
 
 ! --- WAN : liaison vers AZAY (10.10.10.0/30) ---
@@ -148,14 +149,16 @@ exit
 ! --- Passerelle par défaut = SVI du routeur ---
 ip default-gateway 192.168.1.62
 
-! --- Port vers le routeur (déjà en VLAN 10) ---
+! --- Port vers le routeur ---
 interface GigabitEthernet3/0/24
-description ROUTE_VERS_ROUTEUR_LAN_EVIAN
-switchport mode access
-switchport access vlan 10
-spanning-tree portfast edge
-no shutdown
-exit
+ description ROUTE_VERS_ROUTEUR_LAN_EVIAN
+ switchport mode trunk
+ switchport trunk native vlan 10
+ switchport trunk allowed vlan 1-2,10,1002-1005
+ spanning-tree portfast edge
+ storm-control broadcast level 10.00
+ storm-control action trap
+ no shutdown
 
 ! --- Tous les autres ports en VLAN 10 (LAN EVIAN) ---
 interface range GigabitEthernet3/0/1 - 23
