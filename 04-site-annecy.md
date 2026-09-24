@@ -2,26 +2,26 @@
 
 ## Équipements
 
-- Routeur : `R-ANNECY`, Cisco 2911.
-- Switch : `SW-ANNECY`, Cisco 2960.
+- Routeur : `LAB_ROUTEUR_ANNECY`, Cisco 800 Series.
+- Switch : `LAB_SW_ANNECY`, Cisco Catalyst 2960X.
 - PC : `PC-ANNECY`.
 
 ## Connexions
 
 | Équipement | Port | Équipement | Port |
 |---|---|---|---|
-| PC-ANNECY | `FastEthernet0` | SW-ANNECY | `FastEthernet0/1` |
-| SW-ANNECY | `GigabitEthernet0/1` | R-ANNECY | `GigabitEthernet0/0` |
-| R-ANNECY | `GigabitEthernet0/1` | R-EVIAN | `GigabitEthernet0/2` |
-| R-ANNECY | `GigabitEthernet0/2` | R-VILLEMANDRY | `GigabitEthernet0/2` |
+| PC-ANNECY | `FastEthernet0` | LAB_SW_ANNECY | `FastEthernet0/1` |
+| SW-ANNECY | `GigabitEthernet0/1` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/0` |
+| R-ANNECY | `GigabitEthernet0/1` | LAB_ROUTEUR_EVIAN | `GigabitEthernet0/2` |
+| R-ANNECY | `GigabitEthernet0/2` | LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/2` |
 
 ## Adressage
 
 | Interface | Adresse |
 |---|---|
-| R-ANNECY G0/0 | `192.230.4.1/22` |
-| R-ANNECY G0/1 | `10.10.10.10/30` |
-| R-ANNECY G0/2 | `10.10.10.14/30` |
+| LAB_ROUTEUR_ANNECY G0/0 | `192.230.4.1/22` |
+| LAB_ROUTEUR_ANNECY G0/1 | `10.10.10.10/30` |
+| LAB_ROUTEUR_ANNECY G0/2 | `10.10.10.14/30` |
 | SW-ANNECY VLAN 1 | `192.230.4.2/22` |
 | PC-ANNECY | `192.230.5.20/22` |
 | Passerelle PC et switch | `192.230.4.1` |
