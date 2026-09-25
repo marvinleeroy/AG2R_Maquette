@@ -2,27 +2,27 @@
 
 ## Équipements
 
-- Routeur : `R-EVIAN`, Cisco 2911.
-- Switch : `SW-EVIAN`, Cisco 2960.
+- Routeur : `LAB_ROUTEUR_EVIAN`, Cisco 2911.
+- Switch : `LAB_SWITCH_EVIAN`, Cisco 2960.
 - PC : `PC-EVIAN`.
 
 ## Connexions
 
 | Équipement | Port | Équipement | Port |
 |---|---|---|---|
-| PC-EVIAN | `FastEthernet0` | SW-EVIAN | `FastEthernet0/1` |
-| SW-EVIAN | `GigabitEthernet0/1` | R-EVIAN | `GigabitEthernet0/0` |
-| R-EVIAN | `GigabitEthernet0/1` | R-AZAY | `GigabitEthernet0/1` |
-| R-EVIAN | `GigabitEthernet0/2` | R-ANNECY | `GigabitEthernet0/1` |
+| PC-EVIAN | `FastEthernet0` | LAB_SWITCH_EVIAN | `FastEthernet0/1` |
+| LAB_SWITCH_EVIAN | `GigabitEthernet0/1` | LAB_ROUTEUR_EVIAN | `GigabitEthernet0/0` |
+| LAB_ROUTEUR_EVIAN | `GigabitEthernet0/1` | LAB_ROUTEUR_AZAY | `GigabitEthernet0/1` |
+| LAB_ROUTEUR_EVIAN | `GigabitEthernet0/2` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/1` |
 
 ## Adressage
 
 | Interface | Adresse |
 |---|---|
-| R-EVIAN G0/0 | `192.168.1.62/26` |
-| R-EVIAN G0/1 | `10.10.10.2/30` |
-| R-EVIAN G0/2 | `10.10.10.9/30` |
-| SW-EVIAN VLAN 1 | `192.168.1.61/26` |
+| LAB_ROUTEUR_EVIAN G0/0 | `192.168.1.62/26` |
+| LAB_ROUTEUR_EVIAN G0/1 | `10.10.10.2/30` |
+| LAB_ROUTEUR_EVIAN G0/2 | `10.10.10.9/30` |
+| LAB_SWITCH_EVIAN VLAN 1 | `192.168.1.61/26` |
 | PC-EVIAN | `192.168.1.10/26` |
 | Passerelle PC et switch | `192.168.1.62` |
 
@@ -31,7 +31,7 @@
 ```cisco
 enable
 configure terminal
-hostname R-EVIAN
+hostname LAB_ROUTEUR_EVIAN
 no ip domain-lookup
 enable secret EVIAN
 service password-encryption
@@ -81,7 +81,7 @@ copy running-config startup-config
 ```cisco
 enable
 configure terminal
-hostname SW-EVIAN
+hostname LAB_SWITCH_EVIAN
 no ip domain-lookup
 enable secret EVIAN
 service password-encryption
@@ -100,7 +100,7 @@ exit
 vtp mode transparent
 
 interface vlan 1
-description MANAGEMENT_SW_EVIAN
+description MANAGEMENT_LAB_SWITCH_EVIAN
 ip address 192.168.1.61 255.255.255.192
 no shutdown
 exit
@@ -115,7 +115,7 @@ no shutdown
 exit
 
 interface gigabitEthernet0/1
-description VERS_R_EVIAN_G0_0
+description VERS_LAB_ROUTEUR_EVIAN_G0_0
 switchport mode access
 no shutdown
 exit
@@ -126,11 +126,15 @@ copy running-config startup-config
 
 ## Configuration du PC
 
+Dans `Desktop > IP Configuration > Static` :
+
 - IP : `192.168.1.10`.
 - Masque : `255.255.255.192`.
 - Passerelle : `192.168.1.62`.
 
 ## Vérifications
+
+Sur le routeur :
 
 ```cisco
 show ip interface brief
@@ -140,9 +144,10 @@ ping 10.10.10.10
 ping 192.168.1.10
 ```
 
-Depuis le PC :
+Sur le PC :
 
 ```text
+ping 192.168.1.62
 ping 192.168.2.10
 ping 10.20.3.10
 ping 192.230.5.20

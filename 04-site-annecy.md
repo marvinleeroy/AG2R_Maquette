@@ -2,27 +2,27 @@
 
 ## Équipements
 
-- Routeur : `R-ANNECY`, Cisco 2911.
-- Switch : `SW-ANNECY`, Cisco 2960.
+- Routeur : `LAB_ROUTEUR_ANNECY`, Cisco 2911.
+- Switch : `LAB_SWITCH_ANNECY`, Cisco 2960.
 - PC : `PC-ANNECY`.
 
 ## Connexions
 
 | Équipement | Port | Équipement | Port |
 |---|---|---|---|
-| PC-ANNECY | `FastEthernet0` | SW-ANNECY | `FastEthernet0/1` |
-| SW-ANNECY | `GigabitEthernet0/1` | R-ANNECY | `GigabitEthernet0/0` |
-| R-ANNECY | `GigabitEthernet0/1` | R-EVIAN | `GigabitEthernet0/2` |
-| R-ANNECY | `GigabitEthernet0/2` | R-VILLEMANDRY | `GigabitEthernet0/2` |
+| PC-ANNECY | `FastEthernet0` | LAB_SWITCH_ANNECY | `FastEthernet0/1` |
+| LAB_SWITCH_ANNECY | `GigabitEthernet0/1` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/0` |
+| LAB_ROUTEUR_ANNECY | `GigabitEthernet0/1` | LAB_ROUTEUR_EVIAN | `GigabitEthernet0/2` |
+| LAB_ROUTEUR_ANNECY | `GigabitEthernet0/2` | LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/2` |
 
 ## Adressage
 
 | Interface | Adresse |
 |---|---|
-| R-ANNECY G0/0 | `192.230.4.1/22` |
-| R-ANNECY G0/1 | `10.10.10.10/30` |
-| R-ANNECY G0/2 | `10.10.10.14/30` |
-| SW-ANNECY VLAN 1 | `192.230.4.2/22` |
+| LAB_ROUTEUR_ANNECY G0/0 | `192.230.4.1/22` |
+| LAB_ROUTEUR_ANNECY G0/1 | `10.10.10.10/30` |
+| LAB_ROUTEUR_ANNECY G0/2 | `10.10.10.14/30` |
+| LAB_SWITCH_ANNECY VLAN 1 | `192.230.4.2/22` |
 | PC-ANNECY | `192.230.5.20/22` |
 | Passerelle PC et switch | `192.230.4.1` |
 
@@ -31,7 +31,7 @@
 ```cisco
 enable
 configure terminal
-hostname R-ANNECY
+hostname LAB_ROUTEUR_ANNECY
 no ip domain-lookup
 enable secret ANNECY
 service password-encryption
@@ -79,7 +79,7 @@ copy running-config startup-config
 ```cisco
 enable
 configure terminal
-hostname SW-ANNECY
+hostname LAB_SWITCH_ANNECY
 no ip domain-lookup
 enable secret ANNECY
 service password-encryption
@@ -98,7 +98,7 @@ exit
 vtp mode transparent
 
 interface vlan 1
-description MANAGEMENT_SW_ANNECY
+description MANAGEMENT_LAB_SWITCH_ANNECY
 ip address 192.230.4.2 255.255.252.0
 no shutdown
 exit
@@ -113,7 +113,7 @@ no shutdown
 exit
 
 interface gigabitEthernet0/1
-description VERS_R_ANNECY_G0_0
+description VERS_LAB_ROUTEUR_ANNECY_G0_0
 switchport mode access
 no shutdown
 exit
@@ -124,11 +124,15 @@ copy running-config startup-config
 
 ## Configuration du PC
 
+Dans `Desktop > IP Configuration > Static` :
+
 - IP : `192.230.5.20`.
 - Masque : `255.255.252.0`.
 - Passerelle : `192.230.4.1`.
 
 ## Vérifications
+
+Sur le routeur :
 
 ```cisco
 show ip interface brief
@@ -138,9 +142,10 @@ ping 10.10.10.13
 ping 192.230.5.20
 ```
 
-Depuis le PC :
+Sur le PC :
 
 ```text
+ping 192.230.4.1
 ping 192.168.2.10
 ping 192.168.1.10
 ping 10.20.3.10

@@ -15,51 +15,45 @@ Chaque site possède un routeur, un switch et un PC de test. Les routeurs sont i
 
 ```text
 
- SITE AZAY                                      SITE EVIAN
+ SITE AZAY                                    SITE EVIAN
 
- PC-AZAY                                        PC-EVIAN
- 192.168.2.10/24                                192.168.1.10/26
-     |                                               |
-     | Fa0/1                                         | Fa0/1
-     |                                               |
- +---+--------+                                +---+--------+
- |  SW-AZAY   |                                |  SW-EVIAN  |
- | VLAN 1     |                                | VLAN 1     |
- | .2/24      |                                | .61/26     |
- +---+--------+                                +---+--------+
-     | G0/1                                        | G0/1
-     |                                             |
-     | G0/0                                        | G0/0
- +---+--------+       10.10.10.0/30              +---+--------+
- |  R-AZAY    | G0/1 .1 ================ .2 G0/1 |  R-EVIAN   |
- | G0/0 .1    |                                  | G0/0 .62   |
- | G0/2 .5    |                                  | G0/2 .9    |
- +---+--------+                                  +---+--------+
-     | G0/2 .5                                       | G0/2 .9
-     |                                               |
-     | 10.10.10.4/30                                 | 10.10.10.8/30
-     | .6 vers Azay                                  | .10 vers Annecy
-     |                                               |
-     |                                               |
- +---+----------------+       10.10.10.12/30    +---+-----------+
- | R-VILLEMANDRY      |=========================| R-ANNECY      |
- | G0/1 .6 vers Azay  | .13                  .14| G0/1 .10      |
- | G0/2 .13           |                         | G0/2 .14      |
- | G0/0 .126          |                         | G0/0 .1       |
- +---+----------------+                         +----+----------+
-     | G0/0                                          | G0/0
-     |                                               |
- +---+----------------+                         +---+----------+
- | SW-VILLEMANDRY    |                          | SW-ANNECY    |
- | VLAN 1            |                          | VLAN 1       |
- | .125/25           |                          | .2/22        |
- +---+----------------+                         +---+----------+
-     | Fa0/1                                          | Fa0/1
-     |                                                |
- PC-VILLEMANDRY                                  PC-ANNECY
- 10.20.3.10/25                                    192.230.5.20/22
+ PC-AZAY                                      PC-EVIAN
+ 192.168.2.10/24                              192.168.1.10/26
+     |                                            |
+     | Fa0/1                                      | Fa0/1
+ +---+---------------------+                  +---+---------------------+
+ | LAB_SWITCH_AZAY         |                  | LAB_SWITCH_EVIAN        |
+ | VLAN 1 : .2/24          |                  | VLAN 1 : .61/26         |
+ +---+---------------------+                  +---+---------------------+
+     | G0/1                                       | G0/1
+     |                                            |
+     | G0/0 .1                                    | G0/0 .62
+ +---+---------------------+   10.10.10.0/30  +---+---------------------+
+ | LAB_ROUTEUR_AZAY        |==================| LAB_ROUTEUR_EVIAN       |
+ |                         |G0/1 .1    .2 G0/1|                         |
+ +---+---------------------+                  +---+---------------------+
+     | G0/2 .5                                    | G0/2 .9
+     |                                            |
+     | 10.10.10.4/30                              | 10.10.10.8/30
+     |                                            |
+     | G0/1 .6                                    | G0/1 .10
+ +---+---------------------+  10.10.10.12/30  +---+---------------------+
+ | LAB_ROUTEUR_VILLEMANDRY |==================| LAB_ROUTEUR_ANNECY      |
+ |                         |G0/2 .13  .14 G0/2|                         |
+ +---+---------------------+                  +---+---------------------+
+     | G0/0 .126                                  | G0/0 .1
+     |                                            |
+     | G0/1                                       | G0/1
+ +---+---------------------+                  +---+---------------------+
+ | LAB_SWITCH_VILLEMANDRY  |                  | LAB_SWITCH_ANNECY       |
+ | VLAN 1 : .125/25        |                  | VLAN 1 : .2/22          |
+ +---+---------------------+                  +---+---------------------+
+     | Fa0/1                                      | Fa0/1
+     |                                            |
+ PC-VILLEMANDRY                               PC-ANNECY
+ 10.20.3.10/25                                192.230.5.20/22
 
- SITE VILLEMANDRY                               SITE ANNECY
+ SITE VILLEMANDRY                             SITE ANNECY
 ```
 
 ## Équipements
@@ -96,18 +90,18 @@ Aucun module série n’est nécessaire avec cette architecture : les routeurs 2
 
 | Équipement A | Port | Équipement B | Port |
 |---|---|---|---|
-| PC-AZAY | `FastEthernet0` | SW-AZAY | `FastEthernet0/1` |
-| SW-AZAY | `GigabitEthernet0/1` | R-AZAY | `GigabitEthernet0/0` |
-| R-AZAY | `GigabitEthernet0/1` | R-EVIAN | `GigabitEthernet0/1` |
-| R-AZAY | `GigabitEthernet0/2` | R-VILLEMANDRY | `GigabitEthernet0/1` |
-| PC-EVIAN | `FastEthernet0` | SW-EVIAN | `FastEthernet0/1` |
-| SW-EVIAN | `GigabitEthernet0/1` | R-EVIAN | `GigabitEthernet0/0` |
-| R-EVIAN | `GigabitEthernet0/2` | R-ANNECY | `GigabitEthernet0/1` |
-| PC-VILLEMANDRY | `FastEthernet0` | SW-VILLEMANDRY | `FastEthernet0/1` |
-| SW-VILLEMANDRY | `GigabitEthernet0/1` | R-VILLEMANDRY | `GigabitEthernet0/0` |
-| R-VILLEMANDRY | `GigabitEthernet0/2` | R-ANNECY | `GigabitEthernet0/2` |
-| PC-ANNECY | `FastEthernet0` | SW-ANNECY | `FastEthernet0/1` |
-| SW-ANNECY | `GigabitEthernet0/1` | R-ANNECY | `GigabitEthernet0/0` |
+| PC-AZAY | `FastEthernet0` | LAB_SWITCH_AZAY | `FastEthernet0/1` |
+| LAB_SWITCH_AZAY | `GigabitEthernet0/1` | LAB_ROUTEUR_AZAY | `GigabitEthernet0/0` |
+| LAB_ROUTEUR_AZAY | `GigabitEthernet0/1` | LAB_ROUTEUR_EVIAN | `GigabitEthernet0/1` |
+| LAB_ROUTEUR_AZAY | `GigabitEthernet0/2` | LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/1` |
+| PC-EVIAN | `FastEthernet0` | LAB_SWITCH_EVIAN | `FastEthernet0/1` |
+| LAB_SWITCH_EVIAN | `GigabitEthernet0/1` | LAB_ROUTEUR_EVIAN | `GigabitEthernet0/0` |
+| LAB_ROUTEUR_EVIAN | `GigabitEthernet0/2` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/1` |
+| PC-VILLEMANDRY | `FastEthernet0` | LAB_SWITCH_VILLEMANDRY | `FastEthernet0/1` |
+| LAB_SWITCH_VILLEMANDRY | `GigabitEthernet0/1` | LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/0` |
+| LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/2` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/2` |
+| PC-ANNECY | `FastEthernet0` | LAB_SWITCH_ANNECY | `FastEthernet0/1` |
+| LAB_SWITCH_ANNECY | `GigabitEthernet0/1` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/0` |
 
 Utiliser de préférence le câble **Copper Cross-Over** entre deux routeurs. Pour PC-switch et switch-routeur, utiliser un câble droit ou le choix automatique de Packet Tracer.
 

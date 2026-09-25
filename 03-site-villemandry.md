@@ -2,27 +2,27 @@
 
 ## Équipements
 
-- Routeur : `R-VILLEMANDRY`, Cisco 2911.
-- Switch : `SW-VILLEMANDRY`, Cisco 2960.
+- Routeur : `LAB_ROUTEUR_VILLEMANDRY`, Cisco 2911.
+- Switch : `LAB_SWITCH_VILLEMANDRY`, Cisco 2960.
 - PC : `PC-VILLEMANDRY`.
 
 ## Connexions
 
 | Équipement | Port | Équipement | Port |
 |---|---|---|---|
-| PC-VILLEMANDRY | `FastEthernet0` | SW-VILLEMANDRY | `FastEthernet0/1` |
-| SW-VILLEMANDRY | `GigabitEthernet0/1` | R-VILLEMANDRY | `GigabitEthernet0/0` |
-| R-VILLEMANDRY | `GigabitEthernet0/1` | R-AZAY | `GigabitEthernet0/2` |
-| R-VILLEMANDRY | `GigabitEthernet0/2` | R-ANNECY | `GigabitEthernet0/2` |
+| PC-VILLEMANDRY | `FastEthernet0` | LAB_SWITCH_VILLEMANDRY | `FastEthernet0/1` |
+| LAB_SWITCH_VILLEMANDRY | `GigabitEthernet0/1` | LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/0` |
+| LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/1` | LAB_ROUTEUR_AZAY | `GigabitEthernet0/2` |
+| LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/2` | LAB_ROUTEUR_ANNECY | `GigabitEthernet0/2` |
 
 ## Adressage
 
 | Interface | Adresse |
 |---|---|
-| R-VILLEMANDRY G0/0 | `10.20.3.126/25` |
-| R-VILLEMANDRY G0/1 | `10.10.10.6/30` |
-| R-VILLEMANDRY G0/2 | `10.10.10.13/30` |
-| SW-VILLEMANDRY VLAN 1 | `10.20.3.125/25` |
+| LAB_ROUTEUR_VILLEMANDRY G0/0 | `10.20.3.126/25` |
+| LAB_ROUTEUR_VILLEMANDRY G0/1 | `10.10.10.6/30` |
+| LAB_ROUTEUR_VILLEMANDRY G0/2 | `10.10.10.13/30` |
+| LAB_SWITCH_VILLEMANDRY VLAN 1 | `10.20.3.125/25` |
 | PC-VILLEMANDRY | `10.20.3.10/25` |
 | Passerelle PC et switch | `10.20.3.126` |
 
@@ -31,7 +31,7 @@
 ```cisco
 enable
 configure terminal
-hostname R-VILLEMANDRY
+hostname LAB_ROUTEUR_VILLEMANDRY
 no ip domain-lookup
 enable secret VILLEMANDRY
 service password-encryption
@@ -79,7 +79,7 @@ copy running-config startup-config
 ```cisco
 enable
 configure terminal
-hostname SW-VILLEMANDRY
+hostname LAB_SWITCH_VILLEMANDRY
 no ip domain-lookup
 enable secret VILLEMANDRY
 service password-encryption
@@ -98,7 +98,7 @@ exit
 vtp mode transparent
 
 interface vlan 1
-description MANAGEMENT_SW_VILLEMANDRY
+description MANAGEMENT_LAB_SWITCH_VILLEMANDRY
 ip address 10.20.3.125 255.255.255.128
 no shutdown
 exit
@@ -113,7 +113,7 @@ no shutdown
 exit
 
 interface gigabitEthernet0/1
-description VERS_R_VILLEMANDRY_G0_0
+description VERS_LAB_ROUTEUR_VILLEMANDRY_G0_0
 switchport mode access
 no shutdown
 exit
@@ -124,11 +124,15 @@ copy running-config startup-config
 
 ## Configuration du PC
 
+Dans `Desktop > IP Configuration > Static` :
+
 - IP : `10.20.3.10`.
 - Masque : `255.255.255.128`.
 - Passerelle : `10.20.3.126`.
 
 ## Vérifications
+
+Sur le routeur :
 
 ```cisco
 show ip interface brief
@@ -138,9 +142,10 @@ ping 10.10.10.14
 ping 10.20.3.10
 ```
 
-Depuis le PC :
+Sur le PC :
 
 ```text
+ping 10.20.3.126
 ping 192.168.2.10
 ping 192.168.1.10
 ping 192.230.5.20

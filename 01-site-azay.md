@@ -2,27 +2,27 @@
 
 ## Équipements
 
-- Routeur : `R-AZAY`, Cisco 2911.
-- Switch : `SW-AZAY`, Cisco 2960.
+- Routeur : `LAB_ROUTEUR_AZAY`, Cisco 2911.
+- Switch : `LAB_SWITCH_AZAY`, Cisco 2960.
 - PC : `PC-AZAY`.
 
 ## Connexions
 
 | Équipement | Port | Équipement | Port |
 |---|---|---|---|
-| PC-AZAY | `FastEthernet0` | SW-AZAY | `FastEthernet0/1` |
-| SW-AZAY | `GigabitEthernet0/1` | R-AZAY | `GigabitEthernet0/0` |
-| R-AZAY | `GigabitEthernet0/1` | R-EVIAN | `GigabitEthernet0/1` |
-| R-AZAY | `GigabitEthernet0/2` | R-VILLEMANDRY | `GigabitEthernet0/1` |
+| PC-AZAY | `FastEthernet0` | LAB_SWITCH_AZAY | `FastEthernet0/1` |
+| LAB_SWITCH_AZAY | `GigabitEthernet0/1` | LAB_ROUTEUR_AZAY | `GigabitEthernet0/0` |
+| LAB_ROUTEUR_AZAY | `GigabitEthernet0/1` | LAB_ROUTEUR_EVIAN | `GigabitEthernet0/1` |
+| LAB_ROUTEUR_AZAY | `GigabitEthernet0/2` | LAB_ROUTEUR_VILLEMANDRY | `GigabitEthernet0/1` |
 
 ## Adressage
 
 | Interface | Adresse |
 |---|---|
-| R-AZAY G0/0 | `192.168.2.1/24` |
-| R-AZAY G0/1 | `10.10.10.1/30` |
-| R-AZAY G0/2 | `10.10.10.5/30` |
-| SW-AZAY VLAN 1 | `192.168.2.2/24` |
+| LAB_ROUTEUR_AZAY G0/0 | `192.168.2.1/24` |
+| LAB_ROUTEUR_AZAY G0/1 | `10.10.10.1/30` |
+| LAB_ROUTEUR_AZAY G0/2 | `10.10.10.5/30` |
+| LAB_SWITCH_AZAY VLAN 1 | `192.168.2.2/24` |
 | PC-AZAY | `192.168.2.10/24` |
 | Passerelle PC et switch | `192.168.2.1` |
 
@@ -31,7 +31,7 @@
 ```cisco
 enable
 configure terminal
-hostname R-AZAY
+hostname LAB_ROUTEUR_AZAY
 no ip domain-lookup
 enable secret AZAY
 service password-encryption
@@ -79,7 +79,7 @@ copy running-config startup-config
 ```cisco
 enable
 configure terminal
-hostname SW-AZAY
+hostname LAB_SWITCH_AZAY
 no ip domain-lookup
 enable secret AZAY
 service password-encryption
@@ -98,7 +98,7 @@ exit
 vtp mode transparent
 
 interface vlan 1
-description MANAGEMENT_SW_AZAY
+description MANAGEMENT_LAB_SWITCH_AZAY
 ip address 192.168.2.2 255.255.255.0
 no shutdown
 exit
@@ -113,7 +113,7 @@ no shutdown
 exit
 
 interface gigabitEthernet0/1
-description VERS_R_AZAY_G0_0
+description VERS_LAB_ROUTEUR_AZAY_G0_0
 switchport mode access
 no shutdown
 exit
