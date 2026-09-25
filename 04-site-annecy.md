@@ -31,8 +31,7 @@
 ```cisco
 enable
 configure terminal
-hostname R-ANNECY
-no ip domain-lookup
+hostname LAB_ROUTEUR_ANNECY
 enable secret ANNECY
 service password-encryption
 banner motd # Bienvenue sur le site ANNECY #
@@ -48,27 +47,46 @@ password ANNECY
 login
 exit
 
-interface gigabitEthernet0/0
-description LAN_ANNECY_192.230.4.0_22
+interface vlan 74
+description LAN_ANNECY
 ip address 192.230.4.1 255.255.252.0
 no shutdown
 exit
 
-interface gigabitEthernet0/1
-description LIAISON_VERS_EVIAN_10.10.10.8_30
+interface vlan 42
+description Lien-vers-Evian
 ip address 10.10.10.10 255.255.255.252
 no shutdown
 exit
 
-interface gigabitEthernet0/2
+
+interface FastEthernet0
+description LAN_ANNECY_TRUNK_VERS_SW
+switchport mode trunk
+switchport trunk native vlan 74
+switchport trunk allowed vlan 1-2,42,74,1002-1005
+no shutdown
+exit
+
+
+interface FastEthernet1
+description LIAISON_VERS_EVIAN
+ip address 10.10.10.10 255.255.255.252
+no shutdown
+exit
+
+
+interface FastEthernet3
 description LIAISON_VERS_VILLEMANDRY_10.10.10.12_30
 ip address 10.10.10.14 255.255.255.252
 no shutdown
 exit
 
+
 ip route 192.168.2.0 255.255.255.0 10.10.10.9
 ip route 192.168.1.0 255.255.255.192 10.10.10.9
 ip route 10.20.3.0 255.255.255.128 10.10.10.13
+
 
 end
 copy running-config startup-config
@@ -79,8 +97,7 @@ copy running-config startup-config
 ```cisco
 enable
 configure terminal
-hostname SW-ANNECY
-no ip domain-lookup
+hostname LAB_SW_ANNECY
 enable secret ANNECY
 service password-encryption
 
@@ -97,13 +114,37 @@ exit
 
 vtp mode transparent
 
-interface vlan 1
-description MANAGEMENT_SW_ANNECY
+vlan 74
+name LAN_ANNECY
+exit
+
+interface vlan 74
+description MANAGEMENT_SW_ANNECY_VLAN74
 ip address 192.230.4.2 255.255.252.0
 no shutdown
 exit
 
+
 ip default-gateway 192.230.4.1
+
+interface vlan 42
+description Lien-vers-Evian
+ip address 192.230.4.2 255.255.252.0
+no shutdown
+exit
+
+
+interface GigabitEthernet0/1
+description LIAISON_VERS_ANNECY
+switchport mode trunk
+switchport trunk native vlan 74
+switchport trunk allowed vlan 1-2,74,1002-1005
+spanning-tree portfast edge
+storm-control broadcast level 10.00
+storm-control action trap
+no shutdown
+exit
+
 
 interface fastEthernet0/1
 description PC_ANNECY
@@ -147,6 +188,3 @@ ping 10.20.3.10
 tracert 192.168.2.10
 ```
 
-## Correction importante
-
-Avec un masque `/22`, `192.230.5.20` appartient au réseau `192.230.4.0/22`. Il est donc normal que le routeur et le switch utilisent des adresses en `192.230.4.x` tandis que le PC utilise `192.230.5.20`.
